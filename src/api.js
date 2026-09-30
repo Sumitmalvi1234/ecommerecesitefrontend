@@ -1,4 +1,4 @@
-const API_URL = "https://ecommercesitebackend-szq3.onrender.com/api";
+const API_URL = "https://ecommercesitebackend-1.onrender.com";
 
 export const registerUser = async (userData) => {
     const response = await fetch(`${API_URL}/auth/register`, {
