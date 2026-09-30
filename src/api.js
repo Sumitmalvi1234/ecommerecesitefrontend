@@ -1,5 +1,5 @@
 // ✅ FIXED: Added the required /api path to the end of the string
-const API_URL = "https://onrender.com";
+const API_URL = import.meta.env.VITE_API_URL;
 
 // Helper function to dynamically grab the token from storage
 const getAuthHeaders = () => {

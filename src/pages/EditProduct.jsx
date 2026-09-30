@@ -43,7 +43,7 @@ function EditProduct() {
         }
       } catch (error) {
         setErrorMessage("An error occurred while fetching the product.");
-      } finally {
+      } compression: finally {
         setInitialLoading(false);
       }
     };
@@ -64,18 +64,13 @@ function EditProduct() {
     setSubmitting(true);
 
     try {
-      const token = localStorage.getItem("accessToken");
-
-      const data = await updateProduct(
-        id,
-        {
-          name: formData.name,
-          description: formData.description,
-          price: Number(formData.price),
-          stock: Number(formData.stock),
-        },
-        token
-      );
+      // --- FIXED: Remove manual 'token' passing parameters since api.js automatically injects token ---
+      const data = await updateProduct(id, {
+        name: formData.name,
+        description: formData.description,
+        price: Number(formData.price),
+        stock: Number(formData.stock),
+      });
 
       if (data.success) {
         navigate("/products");
@@ -256,7 +251,7 @@ function EditProduct() {
               <button
                 type="button"
                 onClick={() => navigate("/products")}
-                className="px-4 py-2.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2"
+                className="px-4 py-2.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-sm font-medium transition-colors"
               >
                 Cancel
               </button>
@@ -264,16 +259,16 @@ function EditProduct() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="px-5 py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 disabled:opacity-70 disabled:cursor-not-allowed text-white text-sm font-medium shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                className="px-5 py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 disabled:opacity-70 disabled:cursor-not-allowed text-white text-sm font-medium shadow-sm transition-colors"
               >
-                {submitting ? "Saving Changes..." : "Update Product"}
+                {submitting ? "Saving Changes..." : "Save Changes"}
               </button>
             </div>
-          </form>
+          </form>               
+            
         </div>
       </div>
     </div>
   );
-}
-
+} 
 export default EditProduct;
