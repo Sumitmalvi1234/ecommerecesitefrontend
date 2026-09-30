@@ -28,7 +28,7 @@ function AddProduct() {
     setLoading(true);
 
     try {
-      const token = localStorage.getItem("accessToken");
+      const token = localStorage.getItem("token");
 
       const result = await createProduct(
         {
@@ -36,7 +36,7 @@ function AddProduct() {
           price: Number(formData.price),
           stock: Number(formData.stock),
         },
-        token
+        
       );
 
       if (result.success) {

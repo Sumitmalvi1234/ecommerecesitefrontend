@@ -29,7 +29,8 @@ function Login() {
       const result = await loginUser(formData);
 
       if (result.success) {
-        localStorage.setItem("accessToken", result.accessToken);
+        // --- FIXED: Key name changed from "accessToken" to "token" ---
+        localStorage.setItem("token", result.accessToken);
         localStorage.setItem("user", JSON.stringify(result.user));
         navigate("/products");
       } else {

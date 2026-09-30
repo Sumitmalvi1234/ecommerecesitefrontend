@@ -9,11 +9,21 @@ function Products() {
 
   const loadProducts = async () => {
     setLoading(true);
-    const result = await getProducts();
-    if (result.success) {
-      setProducts(result.products);
+    try {
+      const result = await getProducts();
+      if (result.success) {
+        setProducts(result.products);
+      } else {
+        // If backend tells us the token is invalid/expired, log out automatically
+        if (result.message === "Access token required" || result.message === "Invalid or expired access token") {
+          handleLogout();
+        }
+      }
+    } catch (error) {
+      console.error("Failed to load products", error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -23,8 +33,8 @@ function Products() {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this product?")) return;
 
-    const token = localStorage.getItem("accessToken");
-    const result = await deleteProduct(id, token);
+    // --- FIXED: Removed manual token passing since api.js automatically handles it via localStorage ---
+    const result = await deleteProduct(id);
 
     if (result.success) {
       loadProducts();
@@ -34,7 +44,8 @@ function Products() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("accessToken");
+    // --- FIXED: Clears "token" instead of "accessToken" to stay consistent ---
+    localStorage.removeItem("token");
     localStorage.removeItem("user");
     navigate("/login");
   };
