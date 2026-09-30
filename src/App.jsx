@@ -6,13 +6,16 @@ import Products from "./pages/Products";
 import AddProduct from "./pages/AddProduct";
 import EditProduct from "./pages/EditProduct";
 
-function App() {
-    const token = localStorage.getItem("accessToken");
+// --- FIXED: A dynamic route guard that checks the token right when you visit the page ---
+const ProtectedRoute = ({ children }) => {
+    const isAuthenticated = !!localStorage.getItem("token"); // Changed to "token"
+    return isAuthenticated ? children : <Navigate to="/login" replace />;
+};
 
+function App() {
     return (
         <BrowserRouter>
             <Routes>
-
                 <Route
                     path="/"
                     element={<Navigate to="/products" />}
@@ -30,19 +33,31 @@ function App() {
 
                 <Route
                     path="/products"
-                    element={<Products />}
+                    // --- OPTIONAL BUT RECOMMENDED: Protect the list view too ---
+                    element={
+                        <ProtectedRoute>
+                            <Products />
+                        </ProtectedRoute>
+                    }
                 />
 
                 <Route
                     path="/add-product"
-                    element={token ? <AddProduct /> : <Navigate to="/login" />}
+                    element={
+                        <ProtectedRoute>
+                            <AddProduct />
+                        </ProtectedRoute>
+                    }
                 />
 
                 <Route
                     path="/edit-product/:id"
-                    element={token ? <EditProduct /> : <Navigate to="/login" />}
+                    element={
+                        <ProtectedRoute>
+                            <EditProduct />
+                        </ProtectedRoute>
+                    }
                 />
-
             </Routes>
         </BrowserRouter>
     );
