@@ -1,5 +1,5 @@
 // --- FIXED: Added /api to the end of your backend URL string ---
-const API_URL = "https://onrender.com";
+const API_URL = "https://ecommercesitebackend-1.onrender.com/";
 
 // Helper function to dynamically grab the token from storage
 const getAuthHeaders = () => {
